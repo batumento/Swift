@@ -13,17 +13,23 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
         view.backgroundColor = .yellow
         
-        let v1 = UINavigationController(rootViewController: HomeViewController())
-        let v2 = UINavigationController(rootViewController: UpcomingViewController())
-        let v3 = UINavigationController(rootViewController: SearchViewController())
-        let v4 = UINavigationController(rootViewController: DownloadsViewController())
+        let viewC1 = UINavigationController(rootViewController: HomeViewController())
+        let viewC2 = UINavigationController(rootViewController: UpcomingViewController())
+        let viewC3 = UINavigationController(rootViewController: SearchViewController())
+        let viewC4 = UINavigationController(rootViewController: DownloadsViewController())
 
-        v1.tabBarItem.image = UIImage(systemName: "house")
-        v2.tabBarItem.image = UIImage(systemName: "play.circle")
-        v3.tabBarItem.image = UIImage(systemName: "magnifyingglass")
-        v4.tabBarItem.image = UIImage(systemName: "square.and.arrow.down")
+        viewC1.tabBarItem.image = UIImage(systemName: "house")
+        viewC2.tabBarItem.image = UIImage(systemName: "play.circle")
+        viewC3.tabBarItem.image = UIImage(systemName: "magnifyingglass")
+        viewC4.tabBarItem.image = UIImage(systemName: "square.and.arrow.down")
 
-        setViewControllers([v1, v2, v3, v4], animated: true)
+        viewC1.title = "Home"
+        viewC2.title = "Coming Soon"
+        viewC3.title = "Top Search"
+        viewC4.title = "Download"
+
+        tabBar.tintColor = .label
+        setViewControllers([viewC1, viewC2, viewC3, viewC4], animated: true)
     }
 
 
