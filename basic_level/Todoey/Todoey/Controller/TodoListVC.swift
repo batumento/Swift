@@ -12,18 +12,36 @@ class TodoListVC: UITableViewController {
     let itemArray = ["Example Eggs", "Example Somon", "Example Cugs"]
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Todoey"
         tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
         view.backgroundColor = .systemBackground
+        configNavigationBar()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
+
+    func configNavigationBar() {
+        navigationItem.title = "Todoey"
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
+        navigationItem.rightBarButtonItem?.tintColor = .white
+        navigationItem.titleView?.tintColor = .systemPink
+
         if let navigationBar = navigationController?.navigationBar {
-            navigationBar.standardAppearance.backgroundColor = .green
-            navigationBar.compactAppearance?.backgroundColor = .systemCyan
-            navigationBar.scrollEdgeAppearance?.backgroundColor = .systemPink
-            navigationBar.backgroundColor = .systemOrange
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.titleTextAttributes = [
+//                .kern : 1,
+                .foregroundColor : UIColor.white
+            ]
+             appearance.backgroundColor = .systemCyan
+
+             navigationBar.standardAppearance = appearance
+             navigationBar.scrollEdgeAppearance = appearance
+             navigationBar.compactAppearance = appearance
+             navigationBar.compactScrollEdgeAppearance = appearance
         }
+    }
+
+    @objc func addButtonTapped() {
+        print("Exams")
     }
 }
 
