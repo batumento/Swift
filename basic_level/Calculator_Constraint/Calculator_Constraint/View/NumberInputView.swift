@@ -75,16 +75,16 @@ class NumberInputView: UIStackView {
             addArrangedSubview(stackView)
             for (index,view) in arrangedSubviews.enumerated() {
                 if let button = view as? UIButton {
+                    button.titleLabel?.font = .systemFont(ofSize: 25)
                     if index >= 1 {
                         stackView.addArrangedSubview(button)
-                    }
-                    button.titleLabel?.font = .systemFont(ofSize: 25)
-                    if index == 2 {
-                        button.backgroundColor = .systemOrange
-                        button.titleLabel?.textColor = .white
-                        removeArrangedSubview(button3)
-                        removeArrangedSubview(button2)
-                        continue
+                        if index == 2 {
+                            button.backgroundColor = .systemOrange
+                            button.titleLabel?.textColor = .white
+                            removeArrangedSubview(button3)
+                            removeArrangedSubview(button2)
+                            continue
+                        }
                     }
                     button.backgroundColor = .darkGray
                     button.titleLabel?.textColor = .white

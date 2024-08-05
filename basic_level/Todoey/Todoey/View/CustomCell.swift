@@ -26,7 +26,6 @@ class CustomCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     private func setupViews() {
         backgroundColor = .clear
         accessoryView = UIImageView(image: UIImage(systemName: "checkmark.circle"))
