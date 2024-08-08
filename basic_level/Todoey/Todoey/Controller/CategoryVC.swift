@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoryVC: UITableViewController {
 
+    var categoryArray = [Category]()
+    let context = DModel.context
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadCategories()
         configNavigationBar()
         tableView.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
     }
@@ -25,7 +30,6 @@ class CategoryVC: UITableViewController {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.titleTextAttributes = [
-                //                .kern : 1,
                 .foregroundColor : UIColor.white
             ]
             appearance.backgroundColor = .systemCyan
@@ -44,9 +48,53 @@ class CategoryVC: UITableViewController {
 
         alertController.addTextField()
         textField = alertController.textFields?.first
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            //Create NSManagmentObject
-        }))
+        alertController.addAction(UIAlertAction(title: "OK", style: .default) { action in
+            //Create NSManagmentObject and save
+            guard let safeText = textField?.text else { return }
+            let newCategory = Category(context: self.context)
+            newCategory.name = safeText
+            self.categoryArray.append(newCategory)
+            self.saveCategories()
+        })
         present(alertController, animated: true)
+    }
+}
+
+//MARK: - Data Management Methods
+
+extension CategoryVC {
+
+    func saveCategories() {
+        do {
+            try self.context.save()
+        } catch {
+            fatalError("Error to saved context: \(error)")
+        }
+        tableView.reloadData()
+    }
+
+    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+        do {
+            categoryArray = try self.context.fetch(request)
+        } catch {
+            fatalError("Error to request Fetch data: \(error)")
+        }
+        tableView.reloadData()
+    }
+}
+
+//MARK: - TableView Data Source Methods
+
+extension CategoryVC {
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return categoryArray.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else { fatalError("Tableview not found CategoryCell") }
+        let category = categoryArray[indexPath.row]
+        cell.categoryName.text = category.name
+        return cell
     }
 }

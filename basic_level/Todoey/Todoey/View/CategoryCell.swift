@@ -11,13 +11,28 @@ class CategoryCell: UITableViewCell {
 
     static let identifier = "CategoryIdentifier"
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    let categoryName: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.textColor = .label
+        return label
+    }()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
+    func setupViews() {
+        addSubview(categoryName)
+        categoryName.translatesAutoresizingMaskIntoConstraints = false
+        categoryName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        categoryName.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

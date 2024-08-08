@@ -18,8 +18,7 @@ class TodoListVC: UITableViewController {
     }()
     
     var itemArray = [Item]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appending(path: "Items.plist", directoryHint: .notDirectory)
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let context = DModel.context
     
     override func viewDidLoad() {
         super.viewDidLoad()

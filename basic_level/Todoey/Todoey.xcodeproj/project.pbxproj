@@ -10,6 +10,7 @@
 		5A624F622C6289A200F9725C /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A624F602C6289A200F9725C /* DataModel.xcdatamodeld */; };
 		5ABBDD622C6512E0008BCCDA /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBDD612C6512E0008BCCDA /* CategoryVC.swift */; };
 		5ABBDD642C651BEA008BCCDA /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBDD632C651BEA008BCCDA /* CategoryCell.swift */; };
+		5ABBDD6B2C652C65008BCCDA /* DModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBDD6A2C652C65008BCCDA /* DModel.swift */; };
 		5AE587532C344BEB00257E21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE587522C344BEB00257E21 /* AppDelegate.swift */; };
 		5AE587552C344BEB00257E21 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE587542C344BEB00257E21 /* SceneDelegate.swift */; };
 		5AE587572C344BEB00257E21 /* TodoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE587562C344BEB00257E21 /* TodoListVC.swift */; };
@@ -21,6 +22,7 @@
 		5A624F612C6289A200F9725C /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		5ABBDD612C6512E0008BCCDA /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
 		5ABBDD632C651BEA008BCCDA /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		5ABBDD6A2C652C65008BCCDA /* DModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DModel.swift; sourceTree = "<group>"; };
 		5AE5874F2C344BEB00257E21 /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE587522C344BEB00257E21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AE587542C344BEB00257E21 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +43,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5ABBDD692C652C51008BCCDA /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				5ABBDD6A2C652C65008BCCDA /* DModel.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		5AE587462C344BEB00257E21 = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +72,7 @@
 			children = (
 				5AE587522C344BEB00257E21 /* AppDelegate.swift */,
 				5AE587542C344BEB00257E21 /* SceneDelegate.swift */,
+				5ABBDD692C652C51008BCCDA /* Constants */,
 				5AE587662C344DA400257E21 /* Controller */,
 				5AE587682C344DB300257E21 /* View */,
 				5AE587672C344DAE00257E21 /* Data Model */,
@@ -178,6 +189,7 @@
 				5AE587572C344BEB00257E21 /* TodoListVC.swift in Sources */,
 				5AE587532C344BEB00257E21 /* AppDelegate.swift in Sources */,
 				5ABBDD642C651BEA008BCCDA /* CategoryCell.swift in Sources */,
+				5ABBDD6B2C652C65008BCCDA /* DModel.swift in Sources */,
 				5A624F622C6289A200F9725C /* DataModel.xcdatamodeld in Sources */,
 				5AE5876C2C34507800257E21 /* CustomCell.swift in Sources */,
 				5AE587552C344BEB00257E21 /* SceneDelegate.swift in Sources */,
