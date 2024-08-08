@@ -6,41 +6,58 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoListVC: UITableViewController {
     
+    let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search"
+        searchBar.keyboardAppearance = .default
+        return searchBar
+    }()
+    
     var itemArray = [Item]()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appending(path: "Items.plist", directoryHint: .notDirectory)
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        setupViews()
         loadItems()
+        searchBar.delegate = self
         tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
-        configNavigationBar()
+//        configNavigationBar()
     }
     
+    func setupViews() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(searchBar)
+        searchBar.sizeToFit()
+        tableView.tableHeaderView = searchBar
+    }
+
     func configNavigationBar() {
-        navigationItem.title = "Todoey"
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
-        navigationItem.rightBarButtonItem = addButton
-        navigationItem.rightBarButtonItem?.tintColor = .white
-        navigationItem.titleView?.tintColor = .systemPink
-        
-        if let navigationBar = navigationController?.navigationBar {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.titleTextAttributes = [
-                //                .kern : 1,
-                .foregroundColor : UIColor.white
-            ]
-            appearance.backgroundColor = .systemCyan
-            
-            navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = appearance
-            navigationBar.compactAppearance = appearance
-            navigationBar.compactScrollEdgeAppearance = appearance
-        }
+        navigationItem.rightBarButtonItem?.action = #selector(addButtonTapped)
+        navigationItem.title = "Item"
+//        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+//        navigationItem.rightBarButtonItem = addButton
+//        navigationItem.rightBarButtonItem?.tintColor = .white
+//        
+//        if let navigationBar = navigationController?.navigationBar {
+//            let appearance = UINavigationBarAppearance()
+//            appearance.configureWithOpaqueBackground()
+//            appearance.titleTextAttributes = [
+//                //                .kern : 1,
+//                .foregroundColor : UIColor.white
+//            ]
+//            appearance.backgroundColor = .systemCyan
+//            
+//            navigationBar.standardAppearance = appearance
+//            navigationBar.scrollEdgeAppearance = appearance
+//            navigationBar.compactAppearance = appearance
+//            navigationBar.compactScrollEdgeAppearance = appearance
+//        }
     }
     
     @objc func addButtonTapped() {
@@ -48,7 +65,10 @@ class TodoListVC: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             guard let safeTextField = textField else { return }
-            self.itemArray.append(Item(title: safeTextField.text!, check: false))
+            let newItem = Item(context: self.context)
+            newItem.title = safeTextField.text
+            newItem.done = false
+            self.itemArray.append(newItem)
             self.saveItems()
         }
         alert.addTextField { (alertTextField) in
@@ -58,29 +78,29 @@ class TodoListVC: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true)
     }
+}
+
+//MARK: - Data Management Methods
+
+extension TodoListVC {
     
     func saveItems() {
-        let encode = PropertyListEncoder()
-        
         do {
-            let data = try encode.encode(itemArray)
-            try data.write(to: dataFilePath!)
+            try self.context.save()
         }
         catch {
-            fatalError("Not Encode Item for .plist format: \(error)")
+            fatalError("Error saving context: \(error)")
         }
         tableView.reloadData()
     }
     
-    func loadItems() {
-        let decoder = PropertyListDecoder()
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
         do {
-            let data = try Data(contentsOf: dataFilePath!)
-            itemArray = try decoder.decode([Item].self, from: data)
+            itemArray = try context.fetch(request)
+        } catch {
+            fatalError("Not load items: \(error)")
         }
-        catch {
-            fatalError("Error for can't decode from url: \(error)")
-        }
+        tableView.reloadData()
     }
 }
 
@@ -92,7 +112,7 @@ extension TodoListVC {
         let item = itemArray[indexPath.row]
         
         cell.descTitle.text = item.title
-        cell.accessoryView?.isHidden = !item.check
+        cell.accessoryView?.isHidden = !item.done
         return cell
     }
     
@@ -107,7 +127,55 @@ extension TodoListVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectItem = itemArray[indexPath.row]
-        selectItem.check = !selectItem.check
+        selectItem.done = !selectItem.done
         saveItems()
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let detailAction = UIContextualAction(style: .normal, title: "Details", handler: { action, view, completionHandler in
+            view.backgroundColor = .systemGray
+            completionHandler(true)
+        })
+        detailAction.backgroundColor = .systemGreen
+        detailAction.image = UIImage(systemName: "square.and.arrow.down.on.square")
+        
+        let portugalAction = UIContextualAction(style: .normal, title: "Portugal", handler: { action, view, completionHandler in
+            self.context.delete(self.itemArray[indexPath.row])
+            self.itemArray.remove(at: indexPath.row)
+            self.saveItems()
+            action.image = UIImage(systemName: "square.and.arrow.down.on.square")
+            completionHandler(true)
+        })
+        portugalAction.backgroundColor = .systemRed
+        portugalAction.image = UIImage(systemName: "eraser.fill")
+        let actions = UISwipeActionsConfiguration(actions: [detailAction, portugalAction])
+        return actions
+    }
+}
+
+//MARK: - UISearchBarDelegate
+
+extension TodoListVC: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        request.predicate = predicate
+        request.sortDescriptors = [sortDescriptor]
+        loadItems(with: request)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+        
     }
 }

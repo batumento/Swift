@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5A30923B2C46B5F200E8C0BE /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A30923A2C46B5F200E8C0BE /* Item.swift */; };
+		5A624F622C6289A200F9725C /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A624F602C6289A200F9725C /* DataModel.xcdatamodeld */; };
+		5ABBDD622C6512E0008BCCDA /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBDD612C6512E0008BCCDA /* CategoryVC.swift */; };
+		5ABBDD642C651BEA008BCCDA /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBDD632C651BEA008BCCDA /* CategoryCell.swift */; };
 		5AE587532C344BEB00257E21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE587522C344BEB00257E21 /* AppDelegate.swift */; };
 		5AE587552C344BEB00257E21 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE587542C344BEB00257E21 /* SceneDelegate.swift */; };
 		5AE587572C344BEB00257E21 /* TodoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE587562C344BEB00257E21 /* TodoListVC.swift */; };
@@ -16,7 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5A30923A2C46B5F200E8C0BE /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		5A624F612C6289A200F9725C /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		5ABBDD612C6512E0008BCCDA /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
+		5ABBDD632C651BEA008BCCDA /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		5AE5874F2C344BEB00257E21 /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE587522C344BEB00257E21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AE587542C344BEB00257E21 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,7 +64,7 @@
 				5AE587542C344BEB00257E21 /* SceneDelegate.swift */,
 				5AE587662C344DA400257E21 /* Controller */,
 				5AE587682C344DB300257E21 /* View */,
-				5AE587672C344DAE00257E21 /* Model */,
+				5AE587672C344DAE00257E21 /* Data Model */,
 				5AE587692C344DBC00257E21 /* Resource */,
 			);
 			path = Todoey;
@@ -70,22 +74,24 @@
 			isa = PBXGroup;
 			children = (
 				5AE587562C344BEB00257E21 /* TodoListVC.swift */,
+				5ABBDD612C6512E0008BCCDA /* CategoryVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		5AE587672C344DAE00257E21 /* Model */ = {
+		5AE587672C344DAE00257E21 /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				5A30923A2C46B5F200E8C0BE /* Item.swift */,
+				5A624F602C6289A200F9725C /* DataModel.xcdatamodeld */,
 			);
-			path = Model;
+			path = "Data Model";
 			sourceTree = "<group>";
 		};
 		5AE587682C344DB300257E21 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				5AE5876B2C34507800257E21 /* CustomCell.swift */,
+				5ABBDD632C651BEA008BCCDA /* CategoryCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -168,9 +174,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A30923B2C46B5F200E8C0BE /* Item.swift in Sources */,
+				5ABBDD622C6512E0008BCCDA /* CategoryVC.swift in Sources */,
 				5AE587572C344BEB00257E21 /* TodoListVC.swift in Sources */,
 				5AE587532C344BEB00257E21 /* AppDelegate.swift in Sources */,
+				5ABBDD642C651BEA008BCCDA /* CategoryCell.swift in Sources */,
+				5A624F622C6289A200F9725C /* DataModel.xcdatamodeld in Sources */,
 				5AE5876C2C34507800257E21 /* CustomCell.swift in Sources */,
 				5AE587552C344BEB00257E21 /* SceneDelegate.swift in Sources */,
 			);
@@ -374,6 +382,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5A624F602C6289A200F9725C /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5A624F612C6289A200F9725C /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 5A624F612C6289A200F9725C /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5AE587472C344BEB00257E21 /* Project object */;
 }
