@@ -18,17 +18,21 @@ class TodoListVC: UITableViewController {
     }()
     
     var itemArray = [Item]()
+    var selectedCategory: Category? {
+        didSet {
+            loadItems()
+        }
+    }
     let context = DModel.context
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        loadItems()
         searchBar.delegate = self
         tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
-//        configNavigationBar()
+        configNavigationBar()
     }
-    
+
     func setupViews() {
         view.backgroundColor = .systemBackground
         view.addSubview(searchBar)
@@ -37,26 +41,10 @@ class TodoListVC: UITableViewController {
     }
 
     func configNavigationBar() {
-        navigationItem.rightBarButtonItem?.action = #selector(addButtonTapped)
         navigationItem.title = "Item"
-//        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
-//        navigationItem.rightBarButtonItem = addButton
-//        navigationItem.rightBarButtonItem?.tintColor = .white
-//        
-//        if let navigationBar = navigationController?.navigationBar {
-//            let appearance = UINavigationBarAppearance()
-//            appearance.configureWithOpaqueBackground()
-//            appearance.titleTextAttributes = [
-//                //                .kern : 1,
-//                .foregroundColor : UIColor.white
-//            ]
-//            appearance.backgroundColor = .systemCyan
-//            
-//            navigationBar.standardAppearance = appearance
-//            navigationBar.scrollEdgeAppearance = appearance
-//            navigationBar.compactAppearance = appearance
-//            navigationBar.compactScrollEdgeAppearance = appearance
-//        }
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
+        navigationItem.rightBarButtonItem?.tintColor = .white
     }
     
     @objc func addButtonTapped() {
@@ -67,6 +55,7 @@ class TodoListVC: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.title = safeTextField.text
             newItem.done = false
+            newItem.parentCategory = self.selectedCategory
             self.itemArray.append(newItem)
             self.saveItems()
         }
@@ -93,7 +82,13 @@ extension TodoListVC {
         tableView.reloadData()
     }
     
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        if let addtionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, addtionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -163,9 +158,8 @@ extension TodoListVC: UISearchBarDelegate {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        request.predicate = predicate
         request.sortDescriptors = [sortDescriptor]
-        loadItems(with: request)
+        loadItems(with: request, predicate: predicate)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

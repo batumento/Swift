@@ -46,10 +46,11 @@ class CategoryVC: UITableViewController {
         var textField: UITextField?
         let alertController = UIAlertController(title: "Category", message: "Add Category.", preferredStyle: .alert)
 
-        alertController.addTextField()
+        alertController.addTextField { field in
+            field.placeholder = "Add to new category"
+        }
         textField = alertController.textFields?.first
-        alertController.addAction(UIAlertAction(title: "OK", style: .default) { action in
-            //Create NSManagmentObject and save
+        alertController.addAction(UIAlertAction(title: "Add", style: .default) { action in
             guard let safeText = textField?.text else { return }
             let newCategory = Category(context: self.context)
             newCategory.name = safeText
@@ -96,5 +97,16 @@ extension CategoryVC {
         let category = categoryArray[indexPath.row]
         cell.categoryName.text = category.name
         return cell
+    }
+}
+
+//MARK: - TableView Delegate Methods
+
+extension CategoryVC {
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = TodoListVC()
+        vc.selectedCategory = categoryArray[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
